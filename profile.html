@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Profile – CancerCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+</head>
+<body>
+
+<div class="app-container">
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🎗️</div>
+      <div class="brand-info">
+        <span class="brand-title">CancerCare</span>
+        <span class="brand-tagline">Care & Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="dashboard.html" class="nav-link">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="profile.html" class="nav-link active">
+        <span class="nav-icon">👤</span>
+        <span>Patient Profile</span>
+      </a>
+      <a href="appointments.html" class="nav-link">
+        <span class="nav-icon">📅</span>
+        <span>Appointments</span>
+      </a>
+      <a href="treatment.html" class="nav-link">
+        <span class="nav-icon">🩺</span>
+        <span>Treatment Tracker</span>
+      </a>
+      <a href="medications.html" class="nav-link">
+        <span class="nav-icon">💊</span>
+        <span>Medications</span>
+      </a>
+      <a href="symptoms.html" class="nav-link">
+        <span class="nav-icon">📝</span>
+        <span>Symptom Journal</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📑</span>
+        <span>Medical Reports</span>
+      </a>
+      <a href="reminders.html" class="nav-link">
+        <span class="nav-icon">⏰</span>
+        <span>Reminders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role">ID: P-10492</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-demo-btn" style="flex: 1; font-size: 11px;">
+          🔄 Reset Data
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-sm" id="logout-btn" style="font-size: 11px;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
+        <div>
+          <h1 class="page-heading">Patient Profile</h1>
+          <span style="font-size: 13px; color: var(--slate-500);">View and manage patient demographics and care context</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="date-pill" id="header-date-pill">Today</span>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <!-- Disclaimer Banner -->
+      <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+          <div class="disclaimer-title">Patient Context Notice</div>
+          <p>This profile contains user-entered reference records for educational and personal organization only. It does not generate medical conclusions or diagnostic profiles.</p>
+        </div>
+      </div>
+
+      <!-- Profile Header Summary Banner -->
+      <div class="card mb-4" style="background: linear-gradient(135deg, #f0fdfa, #ffffff); border-color: var(--primary-200);">
+        <div class="card-body" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;">
+          <div style="display: flex; align-items: center; gap: 20px;">
+            <div style="width: 72px; height: 72px; border-radius: 50%; background: var(--primary-700); color: white; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);" id="profile-avatar-large">
+              EV
+            </div>
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h2 style="font-size: 22px; color: var(--slate-900);" id="header-patient-name">Eleanor Vance</h2>
+                <span class="badge badge-primary" id="header-patient-id">ID: P-10492</span>
+              </div>
+              <p style="font-size: 13px; color: var(--slate-600); margin-top: 4px;" id="header-patient-summary">
+                52 Years • Female • Blood Group: A+ • Springfield, OR
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-outline" id="reset-profile-btn">Revert Changes</button>
+            <button type="submit" form="profile-form" class="btn btn-primary">Save Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <form id="profile-form">
+        <div class="grid grid-cols-2">
+
+          <!-- Section 1: Demographics & Personal Information -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">👤 Personal Demographics</div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="prof-fullName" class="form-label required">Full Name</label>
+                <input type="text" id="prof-fullName" class="form-control" required>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prof-age" class="form-label required">Age</label>
+                  <input type="number" id="prof-age" class="form-control" min="1" max="120" required>
+                </div>
+                <div class="form-group">
+                  <label for="prof-dob" class="form-label">Date of Birth</label>
+                  <input type="date" id="prof-dob" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prof-gender" class="form-label">Gender</label>
+                  <select id="prof-gender" class="form-select">
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Non-Binary">Non-Binary</option>
+                    <option value="Other">Other / Prefer not to say</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="prof-bloodGroup" class="form-label">Blood Group</label>
+                  <select id="prof-bloodGroup" class="form-select">
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="Unknown">Unknown</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prof-phone" class="form-label">Contact Phone</label>
+                  <input type="tel" id="prof-phone" class="form-control" placeholder="(555) 000-0000">
+                </div>
+                <div class="form-group">
+                  <label for="prof-email" class="form-label required">Email Address</label>
+                  <input type="email" id="prof-email" class="form-control" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prof-address" class="form-label">Residential Address</label>
+                <input type="text" id="prof-address" class="form-control" placeholder="Street, City, State, ZIP">
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Clinical Context & Care Team (User-Entered) -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🩺 Care Context & Clinical Team</div>
+              <span class="badge badge-neutral">User-Entered Field</span>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="prof-cancerType" class="form-label required">Cancer Type / Category</label>
+                <input type="text" id="prof-cancerType" class="form-control" placeholder="e.g. Invasive Ductal Carcinoma - Stage IIA" required>
+                <div class="form-hint">Entered by user for care tracking. Does not diagnose or predict cancer.</div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prof-diagnosisDate" class="form-label">Initial Diagnosis Date</label>
+                  <input type="date" id="prof-diagnosisDate" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label for="prof-treatingDoctor" class="form-label required">Treating Doctor / Oncologist</label>
+                  <input type="text" id="prof-treatingDoctor" class="form-control" placeholder="e.g. Dr. Sarah Jenkins, MD" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="prof-hospital" class="form-label">Cancer Center / Hospital</label>
+                <input type="text" id="prof-hospital" class="form-control" placeholder="e.g. Hope Comprehensive Cancer Institute">
+              </div>
+
+              <div class="form-group">
+                <label for="prof-careNotes" class="form-label">Care Team & Protocol Notes</label>
+                <textarea id="prof-careNotes" class="form-textarea" rows="3" placeholder="Additional user notes regarding care team guidance..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Emergency Contacts -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🚨 Emergency Contact Information</div>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label for="prof-emergName" class="form-label required">Emergency Contact Name</label>
+                <input type="text" id="prof-emergName" class="form-control" placeholder="e.g. Robert Vance" required>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="prof-emergRel" class="form-label required">Relationship</label>
+                  <input type="text" id="prof-emergRel" class="form-control" placeholder="e.g. Spouse, Parent, Sibling" required>
+                </div>
+                <div class="form-group">
+                  <label for="prof-emergPhone" class="form-label required">Emergency Contact Phone</label>
+                  <input type="tel" id="prof-emergPhone" class="form-control" placeholder="(555) 000-0000" required>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Data Management & Backup -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">💾 LocalStorage Data Controls</div>
+            </div>
+            <div class="card-body">
+              <p style="font-size: 13px; color: var(--slate-600); margin-bottom: 16px;">
+                All data is maintained locally in your browser's <code>localStorage</code>. You can export a snapshot backup as JSON or reset the demonstration values anytime.
+              </p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" id="export-json-btn">
+                  📥 Export Data (JSON)
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="reload-demo-btn">
+                  🔄 Reload Eleanor Vance Demo
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn btn-secondary" id="cancel-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-lg">Save Profile Changes</button>
+        </div>
+      </form>
+
+    </div>
+  </main>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/profile.js"></script>
+</body>
+</html>

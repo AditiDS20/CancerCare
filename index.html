@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CancerCare – Patient Care & Treatment Management</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+</head>
+<body class="login-page">
+
+  <div class="login-card">
+    <div class="login-brand-header">
+      <div class="login-logo">🎗️</div>
+      <h1 class="login-title">CancerCare</h1>
+      <p class="login-tagline">Patient Care & Treatment Management</p>
+    </div>
+
+    <!-- Educational Demo Credentials Box -->
+    <div class="demo-credentials-box">
+      <div class="title">
+        <span>Demo Credentials</span>
+        <button type="button" id="auto-fill-btn" class="btn btn-outline btn-sm" style="padding: 2px 8px; font-size: 11px;">
+          ⚡ Auto Fill
+        </button>
+      </div>
+      <div style="font-size: 13px; color: var(--slate-700); margin-top: 4px;">
+        <div>Email: <code>demo@cancercare.com</code></div>
+        <div style="margin-top: 2px;">Password: <code>demo123</code></div>
+      </div>
+      <div style="font-size: 11px; color: var(--slate-500); margin-top: 6px;">
+        Frontend prototype for educational demonstration only. Not a clinical auth service.
+      </div>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email" class="form-label required">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          class="form-control" 
+          placeholder="name@example.com" 
+          required 
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label required">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          class="form-control" 
+          placeholder="Enter password" 
+          required 
+          autocomplete="current-password"
+        >
+      </div>
+
+      <div class="form-group" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <label class="form-check">
+          <input type="checkbox" id="remember-me" name="remember">
+          <span style="font-size: 13px; color: var(--slate-600);">Remember me</span>
+        </label>
+        <span style="font-size: 12px; color: var(--primary-700); cursor: pointer;" onclick="alert('For this educational demo, use the credentials provided in the box above.')">
+          Help / Demo Info
+        </span>
+      </div>
+
+      <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 15px;">
+        Sign In to Portal
+      </button>
+
+      <button type="button" id="one-click-demo-btn" class="btn btn-secondary" style="width: 100%; margin-top: 10px; font-size: 13px;">
+        🚀 One-Click Demo Access
+      </button>
+    </form>
+
+    <!-- Medical Disclaimer -->
+    <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--slate-200); font-size: 12px; color: var(--slate-500); text-align: center; line-height: 1.4;">
+      <p style="font-weight: 700; color: var(--slate-700); margin-bottom: 4px;">⚠️ Educational Disclaimer</p>
+      <p>This application is an educational patient-management prototype. It does not provide cancer diagnosis, treatment recommendations, or medical advice. Medical decisions should be made with qualified healthcare professionals.</p>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginForm = document.getElementById('login-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const rememberInput = document.getElementById('remember-me');
+      const autoFillBtn = document.getElementById('auto-fill-btn');
+      const oneClickBtn = document.getElementById('one-click-demo-btn');
+
+      // Autofill button handler
+      autoFillBtn.addEventListener('click', () => {
+        emailInput.value = CancerCareAuth.DEMO_EMAIL;
+        passwordInput.value = CancerCareAuth.DEMO_PASSWORD;
+        CancerCareUI.showToast('Demo credentials filled!', 'info', 2000);
+      });
+
+      // One-click demo access button handler
+      oneClickBtn.addEventListener('click', () => {
+        emailInput.value = CancerCareAuth.DEMO_EMAIL;
+        passwordInput.value = CancerCareAuth.DEMO_PASSWORD;
+        CancerCareAuth.login(CancerCareAuth.DEMO_EMAIL, CancerCareAuth.DEMO_PASSWORD, true);
+        CancerCareUI.showToast('Logging in as Eleanor Vance...', 'success', 1500);
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 600);
+      });
+
+      // Form submission
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        const remember = rememberInput.checked;
+
+        const res = CancerCareAuth.login(email, password, remember);
+        if (res.success) {
+          CancerCareUI.showToast('Login successful! Redirecting to dashboard...', 'success', 1500);
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 600);
+        } else {
+          CancerCareUI.showToast(res.message, 'error', 3500);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

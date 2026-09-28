@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – CancerCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+  <!-- Chart.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Sidebar Backdrop for Mobile -->
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🎗️</div>
+      <div class="brand-info">
+        <span class="brand-title">CancerCare</span>
+        <span class="brand-tagline">Care & Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="dashboard.html" class="nav-link active">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span>Patient Profile</span>
+      </a>
+      <a href="appointments.html" class="nav-link">
+        <span class="nav-icon">📅</span>
+        <span>Appointments</span>
+      </a>
+      <a href="treatment.html" class="nav-link">
+        <span class="nav-icon">🩺</span>
+        <span>Treatment Tracker</span>
+      </a>
+      <a href="medications.html" class="nav-link">
+        <span class="nav-icon">💊</span>
+        <span>Medications</span>
+      </a>
+      <a href="symptoms.html" class="nav-link">
+        <span class="nav-icon">📝</span>
+        <span>Symptom Journal</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📑</span>
+        <span>Medical Reports</span>
+      </a>
+      <a href="reminders.html" class="nav-link">
+        <span class="nav-icon">⏰</span>
+        <span>Reminders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role">ID: P-10492</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-demo-btn" style="flex: 1; font-size: 11px;" title="Reset all data to default demo state">
+          🔄 Reset Data
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-sm" id="logout-btn" style="font-size: 11px;" title="Sign out of portal">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-content">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">
+          ☰
+        </button>
+        <div>
+          <h1 class="page-heading">Patient Dashboard</h1>
+          <span style="font-size: 13px; color: var(--slate-500);" id="dashboard-welcome-msg">
+            Overview of clinical schedule, symptoms, and care progress
+          </span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="date-pill" id="header-date-pill">Today</span>
+        <button type="button" class="btn btn-outline btn-sm" id="view-care-summary-btn">
+          📄 Care Report
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <div class="page-body">
+
+      <!-- Medical Disclaimer Banner -->
+      <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+          <div class="disclaimer-title">Educational Patient-Management Prototype Notice</div>
+          <p>This application is an educational patient-management prototype. It does not provide cancer diagnosis, treatment recommendations, or medical advice. Medical decisions should be made with qualified healthcare professionals.</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons Bar -->
+      <div class="quick-actions-bar">
+        <button type="button" class="quick-action-btn" id="quick-add-symptom-btn">
+          <span style="color: var(--primary-700);">➕</span> Log Symptom
+        </button>
+        <button type="button" class="quick-action-btn" id="quick-add-appointment-btn">
+          <span style="color: var(--accent-blue);">📅</span> New Appointment
+        </button>
+        <button type="button" class="quick-action-btn" id="quick-add-medication-btn">
+          <span style="color: var(--warning);">💊</span> Add Medication
+        </button>
+        <button type="button" class="quick-action-btn" id="quick-add-report-btn">
+          <span style="color: var(--success);">📑</span> Record Report
+        </button>
+      </div>
+
+      <!-- Summary Metrics Grid -->
+      <div class="grid grid-cols-4 mb-4">
+        <!-- Next Appointment -->
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Next Appointment</span>
+            <div class="stat-value" style="font-size: 18px;" id="stat-next-apt-date">Loading...</div>
+            <span class="stat-desc" id="stat-next-apt-doctor">With Doctor</span>
+          </div>
+          <div class="stat-icon blue">📅</div>
+        </div>
+
+        <!-- Treatment Phase -->
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Treatment Phase</span>
+            <div class="stat-value" style="font-size: 18px;" id="stat-treatment-phase">Cycle 8/12</div>
+            <span class="stat-desc" id="stat-treatment-progress">65% Overall Completed</span>
+          </div>
+          <div class="stat-icon primary">🩺</div>
+        </div>
+
+        <!-- Active Medications -->
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Daily Medications</span>
+            <div class="stat-value" id="stat-meds-taken">3 / 4</div>
+            <span class="stat-desc" id="stat-meds-desc">Doses taken today</span>
+          </div>
+          <div class="stat-icon warning">💊</div>
+        </div>
+
+        <!-- Reports & Reminders -->
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Active Reminders</span>
+            <div class="stat-value" id="stat-reminders-count">3 Pending</div>
+            <span class="stat-desc" id="stat-reports-count">4 Medical Reports on file</span>
+          </div>
+          <div class="stat-icon success">⏰</div>
+        </div>
+      </div>
+
+      <!-- Treatment Progress Card -->
+      <div class="card mb-4">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🩺 Current Treatment Journey Progress</span>
+            <span class="badge badge-primary" id="treatment-badge-phase">Adjuvant Chemotherapy</span>
+          </div>
+          <a href="treatment.html" class="btn btn-outline btn-sm">Manage Treatment Tracker &rarr;</a>
+        </div>
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+            <span style="font-weight: 600; font-size: 14px;" id="treatment-subphase-text">Weekly Paclitaxel - Cycle 8 of 12</span>
+            <span style="font-weight: 700; color: var(--primary-700); font-size: 16px;" id="treatment-percent-label">65%</span>
+          </div>
+          <div class="progress-container progress-lg">
+            <div class="progress-bar" id="treatment-progress-bar" style="width: 65%;"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--slate-500); margin-top: 8px;">
+            <span id="treatment-start-date">Started: Jul 15, 2026</span>
+            <span id="treatment-next-session">Next Session: Oct 02, 2026 at 09:00 AM</span>
+            <span id="treatment-est-end">Targeted End: Nov 30, 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts & Insights Row -->
+      <div class="grid grid-cols-2 mb-4">
+        <!-- Symptom Trend Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📈 Symptom Severity Trend (Last 7 Days)</div>
+            <span class="badge badge-neutral" style="font-size: 11px;">Scale 1-10</span>
+          </div>
+          <div class="card-body">
+            <div style="height: 250px; position: relative;">
+              <canvas id="symptomTrendChart"></canvas>
+            </div>
+            <div style="font-size: 12px; color: var(--slate-500); text-align: center; margin-top: 8px;">
+              Visual tracking of user-reported symptom intensity over time. Not diagnostic.
+            </div>
+          </div>
+        </div>
+
+        <!-- Treatment Milestones Chart / Status -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🎯 Care Milestones Breakdown</div>
+            <span class="badge badge-info" id="milestones-completed-badge">2 of 5 Completed</span>
+          </div>
+          <div class="card-body">
+            <div style="height: 250px; position: relative;">
+              <canvas id="milestonesChart"></canvas>
+            </div>
+            <div style="font-size: 12px; color: var(--slate-500); text-align: center; margin-top: 8px;">
+              Educational visualization of care protocol milestones.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Data Columns: Upcoming Appointments & Today's Medications -->
+      <div class="grid grid-cols-2 mb-4">
+        <!-- Upcoming Appointments -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📅 Upcoming Appointments</div>
+            <a href="appointments.html" class="btn btn-outline btn-sm">View All &rarr;</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div id="dashboard-appointments-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Today's Medication Checklist -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">💊 Medication Schedule for Today</div>
+            <a href="medications.html" class="btn btn-outline btn-sm">All Medications &rarr;</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div id="dashboard-medications-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Symptoms Log & Active Reminders -->
+      <div class="grid grid-cols-2 mb-4">
+        <!-- Recent Symptoms -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📝 Recent Symptom Entries</div>
+            <a href="symptoms.html" class="btn btn-outline btn-sm">Full Journal &rarr;</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div id="dashboard-symptoms-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Active Reminders -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">⏰ Active Reminders & Care Tasks</div>
+            <a href="reminders.html" class="btn btn-outline btn-sm">Manage All &rarr;</a>
+          </div>
+          <div class="card-body" style="padding: 0;">
+            <div id="dashboard-reminders-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- ==========================================================================
+     QUICK ACTION MODALS
+     ========================================================================== -->
+
+<!-- Quick Add Symptom Modal -->
+<div class="modal-backdrop" id="modal-add-symptom">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Log New Symptom</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-add-symptom')">&times;</button>
+    </div>
+    <form id="quick-symptom-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="qs-name" class="form-label required">Symptom Name</label>
+          <input type="text" id="qs-name" class="form-control" placeholder="e.g., Fatigue, Nausea, Neuropathy" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qs-severity" class="form-label required">Severity (1 to 10)</label>
+            <select id="qs-severity" class="form-select" required>
+              <option value="1">1 - Very Mild</option>
+              <option value="2">2 - Mild</option>
+              <option value="3" selected>3 - Noticeable / Mild</option>
+              <option value="4">4 - Moderate</option>
+              <option value="5">5 - Moderate Discomfort</option>
+              <option value="6">6 - Significant</option>
+              <option value="7">7 - Severe</option>
+              <option value="8">8 - Very Severe</option>
+              <option value="9">9 - Extreme</option>
+              <option value="10">10 - Worst Possible</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qs-date" class="form-label required">Date</label>
+            <input type="date" id="qs-date" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qs-notes" class="form-label">Context & Notes</label>
+          <textarea id="qs-notes" class="form-textarea" rows="2" placeholder="Describe onset, duration, triggers, or what helped..."></textarea>
+          <div class="form-hint">For urgent concerns, always contact your clinical care team directly.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-add-symptom')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Symptom</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Quick Add Appointment Modal -->
+<div class="modal-backdrop" id="modal-add-appointment">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Schedule New Appointment</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-add-appointment')">&times;</button>
+    </div>
+    <form id="quick-appointment-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="qa-doctor" class="form-label required">Doctor / Clinician Name</label>
+          <input type="text" id="qa-doctor" class="form-control" placeholder="e.g., Dr. Sarah Jenkins, MD" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qa-date" class="form-label required">Date</label>
+            <input type="date" id="qa-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="qa-time" class="form-label required">Time</label>
+            <input type="time" id="qa-time" class="form-control" value="09:00" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qa-type" class="form-label required">Appointment Type</label>
+            <select id="qa-type" class="form-select" required>
+              <option value="Consultation">Consultation</option>
+              <option value="Chemotherapy Infusion">Chemotherapy Infusion</option>
+              <option value="Radiation Therapy">Radiation Therapy</option>
+              <option value="Follow-up Review">Follow-up Review</option>
+              <option value="Lab & Imaging">Lab & Imaging</option>
+              <option value="Supportive Care">Supportive Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="qa-location" class="form-label">Location / Clinic</label>
+            <input type="text" id="qa-location" class="form-control" placeholder="e.g. Infusion Suite 3B">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qa-notes" class="form-label">Preparation & Notes</label>
+          <textarea id="qa-notes" class="form-textarea" rows="2" placeholder="e.g., Fasting required, bring recent lab printouts"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-add-appointment')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Quick Add Medication Modal -->
+<div class="modal-backdrop" id="modal-add-medication">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Record Medication</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-add-medication')">&times;</button>
+    </div>
+    <form id="quick-medication-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="qm-name" class="form-label required">Medication Name</label>
+          <input type="text" id="qm-name" class="form-control" placeholder="e.g. Ondansetron (Zofran)" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qm-dosage" class="form-label required">Dosage (user-entered)</label>
+            <input type="text" id="qm-dosage" class="form-control" placeholder="e.g. 8 mg oral tablet" required>
+          </div>
+          <div class="form-group">
+            <label for="qm-schedule" class="form-label required">Schedule / Frequency</label>
+            <input type="text" id="qm-schedule" class="form-control" placeholder="e.g. Twice daily after meals" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qm-start-date" class="form-label required">Start Date</label>
+            <input type="date" id="qm-start-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="qm-doctor" class="form-label">Prescribing Doctor</label>
+            <input type="text" id="qm-doctor" class="form-control" placeholder="e.g. Dr. Sarah Jenkins">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qm-notes" class="form-label">Notes & Instructions</label>
+          <textarea id="qm-notes" class="form-textarea" rows="2" placeholder="e.g., Take 30 mins before food"></textarea>
+          <div class="form-hint">Educational tracking only. This application does not recommend dosages.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-add-medication')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Medication</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Quick Record Report Modal -->
+<div class="modal-backdrop" id="modal-add-report">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Record Medical Report Metadata</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-add-report')">&times;</button>
+    </div>
+    <form id="quick-report-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="qr-title" class="form-label required">Document / Report Title</label>
+          <input type="text" id="qr-title" class="form-control" placeholder="e.g., Comprehensive Blood Panel" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qr-date" class="form-label required">Report Date</label>
+            <input type="date" id="qr-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="qr-category" class="form-label required">Category</label>
+            <select id="qr-category" class="form-select" required>
+              <option value="Laboratory / Blood">Laboratory / Blood</option>
+              <option value="Diagnostic Imaging">Diagnostic Imaging (CT, MRI, PET)</option>
+              <option value="Pathology / Biopsy">Pathology / Biopsy</option>
+              <option value="Surgical Summary">Surgical Summary</option>
+              <option value="Genetic & Molecular">Genetic & Molecular Panel</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="qr-facility" class="form-label">Issuing Facility / Lab</label>
+            <input type="text" id="qr-facility" class="form-control" placeholder="e.g. Hope Pathology Core Lab">
+          </div>
+          <div class="form-group">
+            <label for="qr-physician" class="form-label">Reviewing Physician</label>
+            <input type="text" id="qr-physician" class="form-control" placeholder="e.g. Dr. Alan Mercer">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="qr-notes" class="form-label">Key Findings & Notes</label>
+          <textarea id="qr-notes" class="form-textarea" rows="2" placeholder="Record values, normal flags, or physician comments..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-add-report')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Report Metadata</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Patient Care Summary Report Modal (US-10) -->
+<div class="modal-backdrop" id="modal-care-summary">
+  <div class="modal" style="max-width: 680px;">
+    <div class="modal-header">
+      <h3 class="modal-title">📄 Comprehensive Patient Care Summary (US-10)</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-care-summary')">&times;</button>
+    </div>
+    <div class="modal-body" id="care-summary-content">
+      <!-- Injected by JS -->
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" onclick="window.print()">🖨️ Print / Save PDF</button>
+      <button type="button" class="btn btn-primary" onclick="CancerCareUI.closeModal('modal-care-summary')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

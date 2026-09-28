@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treatment Tracker – CancerCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🎗️</div>
+      <div class="brand-info">
+        <span class="brand-title">CancerCare</span>
+        <span class="brand-tagline">Care & Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="dashboard.html" class="nav-link">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span>Patient Profile</span>
+      </a>
+      <a href="appointments.html" class="nav-link">
+        <span class="nav-icon">📅</span>
+        <span>Appointments</span>
+      </a>
+      <a href="treatment.html" class="nav-link active">
+        <span class="nav-icon">🩺</span>
+        <span>Treatment Tracker</span>
+      </a>
+      <a href="medications.html" class="nav-link">
+        <span class="nav-icon">💊</span>
+        <span>Medications</span>
+      </a>
+      <a href="symptoms.html" class="nav-link">
+        <span class="nav-icon">📝</span>
+        <span>Symptom Journal</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📑</span>
+        <span>Medical Reports</span>
+      </a>
+      <a href="reminders.html" class="nav-link">
+        <span class="nav-icon">⏰</span>
+        <span>Reminders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role">ID: P-10492</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-demo-btn" style="flex: 1; font-size: 11px;">
+          🔄 Reset Data
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-sm" id="logout-btn" style="font-size: 11px;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
+        <div>
+          <h1 class="page-heading">Treatment Tracker</h1>
+          <span style="font-size: 13px; color: var(--slate-500);">Monitor phases, cycles, milestones, and personal progress records</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="date-pill" id="header-date-pill">Today</span>
+        <button type="button" class="btn btn-outline btn-sm" id="open-edit-phase-btn">
+          ✏️ Edit Phase Details
+        </button>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <!-- Disclaimer Banner -->
+      <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+          <div class="disclaimer-title">Educational Treatment Tracking Notice</div>
+          <p>This page is an organizational record and visual aid for the patient. It does not recommend, evaluate, or adjust treatment plans. Any dosage or schedule decisions are determined solely by your oncology care team.</p>
+        </div>
+      </div>
+
+      <!-- Hero Treatment Progress Card -->
+      <div class="card mb-4" style="background: linear-gradient(135deg, #ffffff, #f0fdfa); border-color: var(--primary-200);">
+        <div class="card-body">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <span class="badge badge-primary" style="margin-bottom: 8px;" id="disp-phase-badge">Phase 2: Adjuvant Systemic Therapy</span>
+              <h2 style="font-size: 24px; color: var(--slate-900);" id="disp-phase-title">Adjuvant Chemotherapy (AC-T Regimen)</h2>
+              <p style="font-size: 14px; color: var(--slate-600); margin-top: 4px;" id="disp-subphase-text">
+                Weekly Paclitaxel - Cycle 8 of 12
+              </p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 32px; font-weight: 800; color: var(--primary-700); line-height: 1;" id="disp-progress-num">65%</div>
+              <span style="font-size: 12px; color: var(--slate-500);">Overall Phase Completion</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar & Slider Controller -->
+          <div style="margin-top: 20px;">
+            <div class="progress-container progress-lg" style="margin-bottom: 12px;">
+              <div class="progress-bar" id="disp-progress-bar" style="width: 65%;"></div>
+            </div>
+
+            <!-- Manual Progress Adjuster -->
+            <div style="background-color: #ffffff; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--slate-200); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+              <div style="display: flex; align-items: center; gap: 12px; flex: 1; max-width: 450px;">
+                <label for="manual-progress-slider" style="font-size: 13px; font-weight: 600; color: var(--slate-700); white-space: nowrap;">
+                  Update Progress:
+                </label>
+                <input type="range" id="manual-progress-slider" min="0" max="100" value="65" style="flex: 1; accent-color: var(--primary-700); cursor: pointer;">
+                <span id="slider-val-preview" style="font-weight: 700; width: 40px; text-align: right; color: var(--primary-700);">65%</span>
+              </div>
+              <button type="button" class="btn btn-primary btn-sm" id="save-slider-btn">
+                💾 Save Progress
+              </button>
+            </div>
+          </div>
+
+          <!-- Dates & Sessions Grid -->
+          <div class="grid grid-cols-3 mt-4" style="padding-top: 14px; border-top: 1px solid var(--slate-200);">
+            <div>
+              <span style="font-size: 12px; color: var(--slate-500); text-transform: uppercase; font-weight: 600;">Phase Start Date</span>
+              <div style="font-size: 15px; font-weight: 600; color: var(--slate-800);" id="disp-start-date">Jul 15, 2026</div>
+            </div>
+            <div>
+              <span style="font-size: 12px; color: var(--slate-500); text-transform: uppercase; font-weight: 600;">Next Scheduled Session</span>
+              <div style="font-size: 15px; font-weight: 600; color: var(--slate-800);" id="disp-next-session">Oct 02, 2026 at 09:00 AM</div>
+            </div>
+            <div>
+              <span style="font-size: 12px; color: var(--slate-500); text-transform: uppercase; font-weight: 600;">Estimated Target Completion</span>
+              <div style="font-size: 15px; font-weight: 600; color: var(--slate-800);" id="disp-est-end">Nov 30, 2026</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Care Milestones & Visual Timeline Row -->
+      <div class="grid grid-cols-2 mb-4">
+        <!-- Milestones Chart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📊 Care Protocol Phases</div>
+            <span class="badge badge-info" id="milestones-count-badge">5 Milestones Total</span>
+          </div>
+          <div class="card-body">
+            <div style="height: 260px; position: relative;">
+              <canvas id="treatmentPhasesChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clinical Care Protocol Notes -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">📝 Protocol Guidance & Caregiver Notes</div>
+            <button type="button" class="btn btn-outline btn-sm" id="edit-care-notes-btn">Edit Notes</button>
+          </div>
+          <div class="card-body">
+            <div id="disp-care-notes" style="font-size: 14px; color: var(--slate-700); line-height: 1.6; white-space: pre-line;">
+              Patient tolerated cycles 1-7 well. Maintain active hydration (at least 2L fluid intake prior to infusion day) and prophylactic antiemetics as prescribed. Monitor any tingling sensations in fingers or feet.
+            </div>
+            <div style="margin-top: 16px; background-color: var(--slate-50); border: 1px dashed var(--slate-300); padding: 12px; border-radius: 6px; font-size: 12px; color: var(--slate-600);">
+              💡 <strong>Tip for Clinic Visits:</strong> Keep your symptom journal entries handy to discuss side effects or energy levels during pre-chemo vitals review.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment Milestones Table Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🎯 Treatment Journey Milestones</div>
+          <button type="button" class="btn btn-primary btn-sm" id="open-add-milestone-btn">
+            ➕ Add Milestone
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Milestone / Phase Name</th>
+                <th>Target Date</th>
+                <th>Status</th>
+                <th>Clinical Notes</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="milestones-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Edit Treatment Phase Modal -->
+<div class="modal-backdrop" id="modal-edit-treatment">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Treatment Phase Details</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-edit-treatment')">&times;</button>
+    </div>
+    <form id="treatment-edit-form">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="edit-phase-title" class="form-label required">Primary Treatment Phase</label>
+          <input type="text" id="edit-phase-title" class="form-control" placeholder="e.g. Adjuvant Chemotherapy" required>
+        </div>
+        <div class="form-group">
+          <label for="edit-subphase" class="form-label required">Current Sub-Phase / Cycle</label>
+          <input type="text" id="edit-subphase" class="form-control" placeholder="e.g. Weekly Paclitaxel - Cycle 8 of 12" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-start-date" class="form-label required">Start Date</label>
+            <input type="date" id="edit-start-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-est-end" class="form-label required">Estimated Completion Date</label>
+            <input type="date" id="edit-est-end" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-next-session" class="form-label">Next Scheduled Session (Date & Time)</label>
+          <input type="datetime-local" id="edit-next-session" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="edit-care-notes" class="form-label">Protocol Notes</label>
+          <textarea id="edit-care-notes" class="form-textarea" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-edit-treatment')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add / Edit Milestone Modal -->
+<div class="modal-backdrop" id="modal-milestone">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="milestone-modal-title">Add Care Milestone</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-milestone')">&times;</button>
+    </div>
+    <form id="milestone-form">
+      <input type="hidden" id="ms-id">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="ms-title" class="form-label required">Milestone Title</label>
+          <input type="text" id="ms-title" class="form-control" placeholder="e.g. Chemotherapy Cycle 9 Infusion" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ms-date" class="form-label required">Date</label>
+            <input type="date" id="ms-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="ms-status" class="form-label required">Status</label>
+            <select id="ms-status" class="form-select" required>
+              <option value="Upcoming">Upcoming</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ms-notes" class="form-label">Clinical / Personal Notes</label>
+          <textarea id="ms-notes" class="form-textarea" rows="2" placeholder="e.g. Infusion completed smoothly, vitals normal"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-milestone')">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Milestone</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/treatment.js"></script>
+</body>
+</html>

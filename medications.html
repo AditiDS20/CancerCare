@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medications Tracker – CancerCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+</head>
+<body>
+
+<div class="app-container">
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🎗️</div>
+      <div class="brand-info">
+        <span class="brand-title">CancerCare</span>
+        <span class="brand-tagline">Care & Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="dashboard.html" class="nav-link">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span>Patient Profile</span>
+      </a>
+      <a href="appointments.html" class="nav-link">
+        <span class="nav-icon">📅</span>
+        <span>Appointments</span>
+      </a>
+      <a href="treatment.html" class="nav-link">
+        <span class="nav-icon">🩺</span>
+        <span>Treatment Tracker</span>
+      </a>
+      <a href="medications.html" class="nav-link active">
+        <span class="nav-icon">💊</span>
+        <span>Medications</span>
+      </a>
+      <a href="symptoms.html" class="nav-link">
+        <span class="nav-icon">📝</span>
+        <span>Symptom Journal</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📑</span>
+        <span>Medical Reports</span>
+      </a>
+      <a href="reminders.html" class="nav-link">
+        <span class="nav-icon">⏰</span>
+        <span>Reminders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role">ID: P-10492</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-demo-btn" style="flex: 1; font-size: 11px;">
+          🔄 Reset Data
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-sm" id="logout-btn" style="font-size: 11px;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
+        <div>
+          <h1 class="page-heading">Medication Tracker</h1>
+          <span style="font-size: 13px; color: var(--slate-500);">Keep track of supportive prescriptions, schedules, and daily intake</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="date-pill" id="header-date-pill">Today</span>
+        <button type="button" class="btn btn-primary btn-sm" id="open-add-med-btn">
+          ➕ Add Medication
+        </button>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <!-- Disclaimer Banner -->
+      <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+          <div class="disclaimer-title">Medication Prototype Disclaimer</div>
+          <p>This module records patient-entered medications for personal adherence tracking. It does not recommend, evaluate, or suggest medications, adjustments, or dosages. Always take medications exactly as prescribed by your treating physician.</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Row -->
+      <div class="grid grid-cols-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Daily Adherence</span>
+            <div class="stat-value" id="med-stat-adherence">75%</div>
+            <span class="stat-desc" id="med-stat-taken-count">3 of 4 doses logged</span>
+          </div>
+          <div class="stat-icon success">💊</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Active Prescriptions</span>
+            <div class="stat-value" id="med-stat-active-count">4</div>
+            <span class="stat-desc">Ongoing supportive medications</span>
+          </div>
+          <div class="stat-icon primary">📋</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Today's Remaining</span>
+            <div class="stat-value" id="med-stat-remaining-count">1</div>
+            <span class="stat-desc">Evening Calcium + Vitamin D3</span>
+          </div>
+          <div class="stat-icon warning">⏰</div>
+        </div>
+      </div>
+
+      <!-- Action & Filter Bar -->
+      <div class="card mb-4">
+        <div class="card-body" style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-sm btn-primary med-filter-btn active" data-filter="all">All Prescriptions</button>
+            <button type="button" class="btn btn-sm btn-secondary med-filter-btn" data-filter="pending">Pending Today</button>
+            <button type="button" class="btn btn-sm btn-secondary med-filter-btn" data-filter="taken">Taken Today</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="text" id="search-med" class="form-control" style="width: 240px; padding: 6px 12px; font-size: 13px;" placeholder="Search medication, doctor...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Medications Table Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Medication Prescriptions & Daily Schedule</div>
+          <span style="font-size: 13px; color: var(--slate-500);" id="med-count-text">Showing 4 medications</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table" id="medications-table">
+            <thead>
+              <tr>
+                <th style="width: 70px;">Taken</th>
+                <th>Medication Name</th>
+                <th>Dosage (User-Entered)</th>
+                <th>Schedule / Timing</th>
+                <th>Prescribed By</th>
+                <th>Instructions & Notes</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="medications-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="medications-empty" class="empty-state" style="display: none;">
+          <div class="empty-state-icon">💊</div>
+          <div class="empty-state-title">No medications found</div>
+          <p class="empty-state-text">No records match the current filter or search criteria.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Add / Edit Medication Modal -->
+<div class="modal-backdrop" id="modal-medication">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="med-modal-title">Add Medication</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-medication')">&times;</button>
+    </div>
+    <form id="medication-form">
+      <input type="hidden" id="med-id">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="med-name" class="form-label required">Medication Name</label>
+          <input type="text" id="med-name" class="form-control" placeholder="e.g. Ondansetron (Zofran)" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="med-dosage" class="form-label required">Dosage (User-Entered)</label>
+            <input type="text" id="med-dosage" class="form-control" placeholder="e.g. 8 mg oral tablet" required>
+            <div class="form-hint">Record exact strength as prescribed.</div>
+          </div>
+          <div class="form-group">
+            <label for="med-schedule" class="form-label required">Frequency / Schedule</label>
+            <input type="text" id="med-schedule" class="form-control" placeholder="e.g. Every 8 hours as needed" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="med-timeOfDay" class="form-label">Time of Day</label>
+            <select id="med-timeOfDay" class="form-select">
+              <option value="Morning">Morning</option>
+              <option value="Afternoon">Afternoon</option>
+              <option value="Evening">Evening</option>
+              <option value="Bedtime">Bedtime</option>
+              <option value="As Needed">As Needed / PRN</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="med-startDate" class="form-label required">Start Date</label>
+            <input type="date" id="med-startDate" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="med-doctor" class="form-label">Prescribing Physician</label>
+          <input type="text" id="med-doctor" class="form-control" placeholder="e.g. Dr. Sarah Jenkins, MD">
+        </div>
+        <div class="form-group">
+          <label for="med-notes" class="form-label">Notes & Intake Instructions</label>
+          <textarea id="med-notes" class="form-textarea" rows="2" placeholder="e.g. Take 30 minutes before chemo infusion with a full glass of water"></textarea>
+          <div class="form-hint">Prototype record only. Does not prescribe or endorse medications.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-medication')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="med-submit-btn">Save Medication</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/medications.js"></script>
+</body>
+</html>

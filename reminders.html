@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care Reminders – CancerCare</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎗️</text></svg>">
+</head>
+<body>
+
+<div class="app-container">
+  <div class="sidebar-backdrop"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-icon">🎗️</div>
+      <div class="brand-info">
+        <span class="brand-title">CancerCare</span>
+        <span class="brand-tagline">Care & Management</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Menu</div>
+      <a href="dashboard.html" class="nav-link">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="profile.html" class="nav-link">
+        <span class="nav-icon">👤</span>
+        <span>Patient Profile</span>
+      </a>
+      <a href="appointments.html" class="nav-link">
+        <span class="nav-icon">📅</span>
+        <span>Appointments</span>
+      </a>
+      <a href="treatment.html" class="nav-link">
+        <span class="nav-icon">🩺</span>
+        <span>Treatment Tracker</span>
+      </a>
+      <a href="medications.html" class="nav-link">
+        <span class="nav-icon">💊</span>
+        <span>Medications</span>
+      </a>
+      <a href="symptoms.html" class="nav-link">
+        <span class="nav-icon">📝</span>
+        <span>Symptom Journal</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <span class="nav-icon">📑</span>
+        <span>Medical Reports</span>
+      </a>
+      <a href="reminders.html" class="nav-link active">
+        <span class="nav-icon">⏰</span>
+        <span>Reminders</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-quick-profile">
+        <div class="user-avatar" id="sidebar-user-avatar">EV</div>
+        <div class="user-meta">
+          <div class="user-name" id="sidebar-user-name">Eleanor Vance</div>
+          <div class="user-role">ID: P-10492</div>
+        </div>
+      </div>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="reset-demo-btn" style="flex: 1; font-size: 11px;">
+          🔄 Reset Data
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-sm" id="logout-btn" style="font-size: 11px;">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <header class="top-header">
+      <div class="header-left">
+        <button type="button" class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation menu">☰</button>
+        <div>
+          <h1 class="page-heading">Care Reminders & Tasks</h1>
+          <span style="font-size: 13px; color: var(--slate-500);">Stay on track with hydration, fasting, premedications, and clinic prep</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="date-pill" id="header-date-pill">Today</span>
+        <button type="button" class="btn btn-primary btn-sm" id="open-add-reminder-btn">
+          ➕ New Reminder
+        </button>
+      </div>
+    </header>
+
+    <div class="page-body">
+
+      <!-- Disclaimer Banner -->
+      <div class="disclaimer-banner">
+        <span class="disclaimer-icon">⚠️</span>
+        <div>
+          <div class="disclaimer-title">Patient Reminder Tool Notice</div>
+          <p>This reminder board is a personal planning tool for the patient. It does not replace automated clinical alert systems or healthcare team notifications.</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Row -->
+      <div class="grid grid-cols-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Pending Reminders</span>
+            <div class="stat-value" id="rem-stat-pending">3</div>
+            <span class="stat-desc">Care tasks awaiting completion</span>
+          </div>
+          <div class="stat-icon warning">⏰</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">Completed Tasks</span>
+            <div class="stat-value" id="rem-stat-completed">1</div>
+            <span class="stat-desc">Logged as done</span>
+          </div>
+          <div class="stat-icon success">✓</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-info">
+            <span class="stat-label">High Priority</span>
+            <div class="stat-value" id="rem-stat-high">2</div>
+            <span class="stat-desc">Requires immediate focus</span>
+          </div>
+          <div class="stat-icon primary">🚨</div>
+        </div>
+      </div>
+
+      <!-- Filter Controls & Action Bar -->
+      <div class="card mb-4">
+        <div class="card-body" style="padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-sm btn-primary rem-filter-btn active" data-filter="all">All Reminders</button>
+            <button type="button" class="btn btn-sm btn-secondary rem-filter-btn" data-filter="pending">Pending</button>
+            <button type="button" class="btn btn-sm btn-secondary rem-filter-btn" data-filter="completed">Completed</button>
+            <button type="button" class="btn btn-sm btn-secondary rem-filter-btn" data-filter="Treatment">Treatment</button>
+            <button type="button" class="btn btn-sm btn-secondary rem-filter-btn" data-filter="Medication">Medication</button>
+            <button type="button" class="btn btn-sm btn-secondary rem-filter-btn" data-filter="Appointment">Appointment</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <input type="text" id="search-reminder" class="form-control" style="width: 240px; padding: 6px 12px; font-size: 13px;" placeholder="Search reminders...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Reminders Table Card -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Reminders & Care Checklist</div>
+          <span style="font-size: 13px; color: var(--slate-500);" id="rem-count-text">Showing 4 reminders</span>
+        </div>
+        <div class="table-responsive">
+          <table class="table" id="reminders-table">
+            <thead>
+              <tr>
+                <th style="width: 60px;">Status</th>
+                <th>Reminder Title</th>
+                <th>Category</th>
+                <th>Due Date & Time</th>
+                <th>Priority</th>
+                <th>Notes / Details</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reminders-tbody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+        <div id="reminders-empty" class="empty-state" style="display: none;">
+          <div class="empty-state-icon">⏰</div>
+          <div class="empty-state-title">No reminders found</div>
+          <p class="empty-state-text">No records match the current filter or search criteria.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Add / Edit Reminder Modal -->
+<div class="modal-backdrop" id="modal-reminder">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="rem-modal-title">Create Reminder</h3>
+      <button type="button" class="modal-close" onclick="CancerCareUI.closeModal('modal-reminder')">&times;</button>
+    </div>
+    <form id="reminder-form">
+      <input type="hidden" id="rem-id">
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="rem-title" class="form-label required">Reminder Title</label>
+          <input type="text" id="rem-title" class="form-control" placeholder="e.g. Drink 2 Liters water before chemo" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="rem-category" class="form-label required">Category</label>
+            <select id="rem-category" class="form-select" required>
+              <option value="Treatment">Treatment</option>
+              <option value="Medication">Medication</option>
+              <option value="Appointment">Appointment</option>
+              <option value="Hydration / Diet">Hydration / Diet</option>
+              <option value="Personal">Personal Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="rem-priority" class="form-label required">Priority</label>
+            <select id="rem-priority" class="form-select" required>
+              <option value="High">High</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rem-datetime" class="form-label required">Due Date & Time</label>
+          <input type="datetime-local" id="rem-datetime" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="rem-notes" class="form-label">Notes & Instructions</label>
+          <textarea id="rem-notes" class="form-textarea" rows="2" placeholder="e.g. Prepare electrolyte solution, keep bottle by bedside"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="CancerCareUI.closeModal('modal-reminder')">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="rem-submit-btn">Save Reminder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container"></div>
+
+<script src="js/app.js"></script>
+<script src="js/reminders.js"></script>
+</body>
+</html>
